@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div>
+    <body>
+        <center><h1>Главная страница</h1></center>
+        <table style="width:100%;">
+            <h3><center>Welcome pages! Вас приветствует сотрудники кинотеатра "Знамя"</center></h3>
+        </table>
+    </body>
+<div>
+    <div>
+        <button onclick="location.href = '/Home/About'">Кэширование 1</button>
+    </div>
+    <div>
+        <button onclick="location.href = '/Home/About2'">Кэширование 2</button>
+    </div>
+</div>
+</div>
