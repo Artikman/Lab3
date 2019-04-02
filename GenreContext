@@ -1,0 +1,62 @@
+using Lab3Cinema.Models;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Lab3Cinema.Data
+{
+    public class GenreContext
+    {
+        public static List<Genre> GetAll()
+        {
+            List<Genre> all = new List<Genre>();
+            using (CinemaContext db = new CinemaContext())
+            {
+                all = db.Genres.ToList();
+            }
+            return all;
+        }
+
+        public static void AddGenre(Genre genre)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                db.Genres.Add(genre);
+                db.SaveChanges();
+            }
+        }
+
+        public static void UpdateGenre(Genre genre)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if(genre != null)
+                {
+                    db.Genres.Update(genre);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static void DeleteGenre(Genre genre)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if(genre != null)
+                {
+                    db.Genres.Remove(genre);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static Genre FindGenreById(int id)
+        {
+            Genre genre = null;
+            using (CinemaContext db = new CinemaContext())
+            {
+                genre = db.Genres.Where(k => k.GenreId == id).ToList().FirstOrDefault();
+            }
+            return genre;
+        }
+    }
+}
