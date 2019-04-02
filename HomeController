@@ -1,0 +1,114 @@
+using System;
+using System.Diagnostics;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Lab3Cinema.Models;
+using Lab3Cinema.ViewModels;
+using Lab3Cinema.Services;
+
+namespace Lab3Cinema.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IMemoryCache _cache;
+        public HomeController(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            HomeViewModel homeViewModel = _cache.Get<HomeViewModel>("operation");
+            return View(homeViewModel);
+        }
+
+        public IActionResult About2()
+        {
+            HomeViewModel homeViewModel = TakeLast.GetHomeViewModel();
+            return View("~/Views/Home/About.cshtml", homeViewModel);
+        }
+
+        [ResponseCache(CacheProfileName = "Caching")]
+        public IActionResult About3()
+        {
+
+            HomeViewModel homeViewModel = TakeLast.GetHomeViewModel();
+            return View("~/Views/Home/About.cshtml", homeViewModel);
+        }
+
+        [HttpGet]
+        [ResponseCache(CacheProfileName = "Caching")]
+        public IActionResult Genre()
+        {
+            return View("~/Views/Genre/Index.cshtml");
+        }
+
+        [HttpGet]
+        [ResponseCache(CacheProfileName = "Caching")]
+        public IActionResult Film()
+        {
+            return View("~/Views/Film/Index.cshtml");
+        }
+
+        [HttpGet]
+        [ResponseCache(CacheProfileName = "Caching")]
+        public IActionResult Session()
+        {
+            return View("~/Views/Session/Index.cshtml");
+        }
+
+        [HttpGet]
+        [ResponseCache(CacheProfileName = "Caching")]
+        public IActionResult Place()
+        {
+            return View("~/Views/Place/Index.cshtml");
+        }
+
+        [HttpPost]
+        public string Genre(string name, string description)
+        {
+            HttpContext.Session.SetString("name", name);
+            HttpContext.Session.SetString("description", description);
+            return "Жанр " + name + " " + description + "\n" +
+                "добавлен в базу ";
+        }
+
+        [HttpPost]
+        public string Film(string name)
+        {
+            return "Фильм " + name + " успешно добавлен";
+        }
+
+        [HttpPost]
+        public string Session(string employessInvolvedInTheSession)
+        {
+            HttpContext.Response.Cookies.Append("employessInvolvedInTheSession", employessInvolvedInTheSession);
+
+            return "Сотрудник " + employessInvolvedInTheSession + " успешно зарегистрирован";
+        }
+
+        [HttpPost]
+        public string Place(string session)
+        {
+            return "Сеанс " + session + " успешно зарегистрирован";
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
