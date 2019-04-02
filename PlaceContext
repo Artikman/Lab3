@@ -1,0 +1,63 @@
+using Lab3Cinema.Models;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Lab3Cinema.Data
+{
+    public class PlaceContext
+    {
+        public static List<Place> GetAll()
+        {
+            List<Place> all = new List<Place>();
+            using (CinemaContext db = new CinemaContext())
+            {
+                all = db.Places.ToList();
+            }
+
+            return all;
+        }
+
+        public static void AddPlace(Place place)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                db.Places.Add(place);
+                db.SaveChanges();
+            }
+        }
+
+        public static void UpdataPlace(Place place)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if (place != null)
+                {
+                    db.Places.Update(place);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static void DeletePlace(Place place)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if (place != null)
+                {
+                    db.Places.Remove(place);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static Place FindPlaceById(int id)
+        {
+            Place place = null;
+            using (CinemaContext db = new CinemaContext())
+            {
+                place = db.Places.Where(k => k.PlaceId == id).ToList().FirstOrDefault();
+            }
+            return place;
+        }
+    }
+}
