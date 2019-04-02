@@ -1,0 +1,63 @@
+using Lab3Cinema.Models;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Lab3Cinema.Data
+{
+    public class FilmContext
+    {
+        public static List<Film> GetAll()
+        {
+            List<Film> all = new List<Film>();
+            using (CinemaContext db = new CinemaContext())
+            {
+                all = db.Films.ToList();
+            }
+
+            return all;
+        }
+
+        public static void AddFilm(Film film)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                db.Films.Add(film);
+                db.SaveChanges();
+            }
+        }
+
+        public static void UpdataFilms(Film film)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if (film != null)
+                {
+                    db.Films.Update(film);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static void DeleteFilm(Film film)
+        {
+            using (CinemaContext db = new CinemaContext())
+            {
+                if (film != null)
+                {
+                    db.Films.Remove(film);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static Film FindFilmById(int id)
+        {
+            Film film = null;
+            using (CinemaContext db = new CinemaContext())
+            {
+                film = db.Films.Where(k => k.FilmId == id).ToList().FirstOrDefault();
+            }
+            return film;
+        }
+    }
+}
