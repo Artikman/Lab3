@@ -1,0 +1,13 @@
+using Lab3Cinema.Models;
+using System.Collections.Generic;
+
+namespace Lab3Cinema.ViewModels
+{
+    public class HomeViewModel
+    {
+        public IEnumerable<Genre> Genres { get; set; }
+        public IEnumerable<Film> Films { get; set; }
+        public IEnumerable<Session> Sessions { get; set; }
+        public IEnumerable<Place> Places { get; set; }
+    }
+}
